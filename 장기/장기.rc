@@ -1,0 +1,97 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 한국어(대한민국) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "E:\장기\\Red_King.bmp"
+
+IDB_BITMAP2             BITMAP                  "E:\장기\\Red_Cha.bmp"
+
+IDB_BITMAP3             BITMAP                  "E:\장기\\Red_Po.bmp"
+
+IDB_BITMAP4             BITMAP                  "E:\장기\\Red_Ma.bmp"
+
+IDB_BITMAP5             BITMAP                  "E:\장기\\Red_Sang.bmp"
+
+IDB_BITMAP6             BITMAP                  "E:\장기\\Red_Sa.bmp"
+
+IDB_BITMAP7             BITMAP                  "E:\장기\\Red_Byung.bmp"
+
+IDB_BITMAP8             BITMAP                  "E:\장기\\70px-Green_King.bmp"
+
+IDB_BITMAP9             BITMAP                  "E:\장기\\70px-Green_Cha.bmp"
+
+IDB_BITMAP10            BITMAP                  "E:\장기\\70px-Green_Po.bmp"
+
+IDB_BITMAP11            BITMAP                  "E:\장기\\70px-Green_Ma.bmp"
+
+IDB_BITMAP12            BITMAP                  "E:\장기\\70px-Green_Sang.bmp"
+
+IDB_BITMAP13            BITMAP                  "E:\장기\\70px-Green_Sa.bmp"
+
+IDB_BITMAP14            BITMAP                  "E:\장기\\70px-Green_Zol.bmp"
+
+IDB_BITMAP15            BITMAP                  "E:\장기\\bitmap15.bmp"
+
+#endif    // 한국어(대한민국) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
