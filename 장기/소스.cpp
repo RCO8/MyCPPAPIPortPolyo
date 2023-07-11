@@ -30,7 +30,7 @@ char tower[10][10] = {	//판에 세울 말들 (소문자 : 한나라, 대문자 : 초나라)
 char targetPoint[10][10]; //말을 움직이게 하기위한 찍을 지점
 static char setTower;	//알 선택
 int tx, ty;	//알 이동
-int preX, preY;	//알 출발점
+static int preX, preY;	//알 출발점
 int x, y;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
@@ -83,8 +83,9 @@ void DrawBitmap(HDC hdc);
 
 void RemovePoint();
 void DrawInCase(int t);	//각 궁전안에 있는 말들을 움직이게 하려고
-void DrawKnight();
-void DrawVihicle();
+void DrawKnight();	//상, 마 이동
+void DrawVihicle();	//차 이동
+void DrawSniper();	//포 이동
 char DrawPoint(int x, int y)
 {
 	//t는 턴상태이며 같은 말끼리 찍어지지 않게 하려고
@@ -122,42 +123,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		ty = HIWORD(lParam) / digit;
 		if (turn == 1)
 		{
-			int tmp = 1;
-			preX = tx;
-			preY = ty;
 			switch (tower[ty][tx])
 			{
 				case 'K':
-					RemovePoint();
-					setTower = tower[ty][tx]; 
+					MoveTower();
 					DrawInCase(1);
 					break;
 				case 'C':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawVihicle();
 					break;
 				case 'P':
-					MessageBox(hWnd, TEXT("포 선택"), TEXT("초나라"), MB_OK);
+					MoveTower();
+					DrawSniper();
 					break;
 				case 'H':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawKnight();
 					break;
 				case 'E':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawKnight();
 					break;
 				case 'V':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawInCase(1);
 					break;
 				case 'S':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					if (ty > 0)	//앞
 						targetPoint[ty - 1][tx] = DrawPoint(tx, ty - 1);
 					if(tx > 0)	//좌
@@ -169,44 +162,40 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 		else if (turn == 2)
 		{
-			preX = tx;
-			preY = ty;
 			switch(tower[ty][tx])
 			{
 				case 'k':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawInCase(2);
 					break;
 				case 'c':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawVihicle();
 					break;
+				case 'p':
+					MoveTower();
+					DrawSniper();
+					break;
 				case 'h':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawKnight();
 					break;
 				case 'e':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawKnight();
 					break;
 				case 'v':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					DrawInCase(2);
 					break;
 				case 's':
-					RemovePoint();
-					setTower = tower[ty][tx];
+					MoveTower();
 					if (ty > 0)
-						targetPoint[ty + 1][tx] = '*';
+						targetPoint[ty + 1][tx] = DrawPoint(tx, ty + 1);
 					if (tx > 0)
-						targetPoint[ty][tx - 1] = '*';
+						targetPoint[ty][tx - 1] = DrawPoint(tx - 1, ty);
 					if (tx < 9)
-						targetPoint[ty][tx + 1] = '*';
+						targetPoint[ty][tx + 1] = DrawPoint(tx + 1, ty);
 					break;
 			}
 		}
@@ -323,6 +312,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
+}
+
+void MoveTower()
+{
+	RemovePoint();
+	preX = tx; preY = ty;
+	setTower = tower[ty][tx];
 }
 
 void DrawInCase(int t)
@@ -473,18 +469,32 @@ void DrawVihicle()
 {
 	int j;
 	//위
-	for (j = 1; j < 10; j++)
+	for (j = ty - 1; j >= 0; j--)
 	{
-		if (targetPoint[ty - j][tx] != ' ')
+		if (tower[j][tx] != ' ')
 			return;
-		targetPoint[ty - j][tx] = DrawPoint(tx, ty - j);
+		targetPoint[j][tx] = DrawPoint(tx, j);
 	}
 	//아래
-	for (i = 1; i < 10; i++)
+	for (j = ty + 1; j < 10; j++)
 	{
-		if (targetPoint[ty + i][tx] != ' ')
+		if (tower[j][tx] != ' ')
 			return;
-		targetPoint[ty + i][tx] = DrawPoint(tx, ty + i);
+		targetPoint[j][tx] = DrawPoint(tx, j);
+	}
+	//왼쪽
+	for (j = tx - 1; j >= 0; j--)
+	{
+		if (tower[ty][j] != ' ')
+			return;
+		targetPoint[ty][j] = DrawPoint(j, ty);
+	}
+	//오른쪽
+	for (j = tx + 1; j < 9; j++)
+	{
+		if (tower[ty][j] != ' ')
+			return;
+		targetPoint[ty][j] = DrawPoint(j, ty);
 	}
 }
 
@@ -550,6 +560,11 @@ void DrawKnight()
 			targetPoint[ty + 1][tx + 2] = DrawPoint(tx + 2, ty + 1);
 		}
 	}
+}
+
+void DrawSniper()
+{
+
 }
 
 void RemovePoint()
