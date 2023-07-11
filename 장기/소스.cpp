@@ -81,6 +81,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
 void TransBlt(HDC hdc, int x, int y, HBITMAP hbitmap, COLORREF clrMask);
 void DrawBitmap(HDC hdc);
 
+void DrawBoard();
 void RemovePoint();
 void DrawInCase(int t);	//각 궁전안에 있는 말들을 움직이게 하려고
 void DrawKnight();	//상, 마 이동
@@ -212,98 +213,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hdc = GetDC(hWnd);
 		RemovePoint();
 		setTower = NULL;
-		InvalidateRect(hWnd, NULL, false);
+		InvalidateRect(hWnd, NULL, true);
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		//판 그리기
-		for(y=0;y<9;y++)
-			for(x=0;x<8;x++)
-				Rectangle(hdc, startPoint + (x* digit), startPoint + (y* digit),
-					(startPoint+digit) + (x * digit), (startPoint + digit) + (y* digit));
-		//중앙선
-		SetPixel(hdc, startPoint, startPoint,RGB(0,255,0));
-		MoveToEx(hdc, startPoint + (digit * 3), startPoint, NULL);
-		LineTo(hdc, startPoint + (digit * 5), startPoint + (digit * 2));
-		MoveToEx(hdc, startPoint + (digit * 5), startPoint, NULL);
-		LineTo(hdc, startPoint + (digit * 3), startPoint + (digit * 2));
+		
+		DrawBoard();
 
-		MoveToEx(hdc, startPoint + (digit * 3), startPoint + (digit * 7), NULL);
-		LineTo(hdc, startPoint + (digit * 5), startPoint + (digit * 9));
-		MoveToEx(hdc, startPoint + (digit * 5), startPoint + (digit * 7), NULL);
-		LineTo(hdc, startPoint + (digit * 3), startPoint + (digit * 9));
-
-		//말 그리기
-		for(y=0;y<10;y++)
-			for(x=0;x<9;x++)
-			{
-				switch (tower[y][x])
-				{
-					//한나라
-				case 'k':
-					BitBlt(hdc, startPoint - (giantImgLength / 2) + (digit * x), startPoint - (giantImgLength / 2) + (digit * y),
-						giantImgLength, giantImgLength, hMemDC[1], 0, 0, SRCCOPY);
-					break;
-				case 'c':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[2], 0, 0, SRCCOPY);
-					break;
-				case 'p':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[3], 0, 0, SRCCOPY);
-					break;
-				case 'h':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[4], 0, 0, SRCCOPY);
-					break;
-				case 'e':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[5], 0, 0, SRCCOPY);
-					break;
-				case 'v':
-					BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
-						smallImgLength, smallImgLength, hMemDC[6], 0, 0, SRCCOPY);
-					break;
-				case 's':
-					BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
-						smallImgLength, smallImgLength, hMemDC[7], 0, 0, SRCCOPY);
-					break;
-					//초나라
-				case 'K':
-					BitBlt(hdc, startPoint - (giantImgLength / 2) + (digit * x), startPoint - (giantImgLength / 2) + (digit * y),
-						giantImgLength, giantImgLength, hMemDC[8], 0, 0, SRCCOPY);
-					break;
-				case 'C':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[9], 0, 0, SRCCOPY);
-					break;
-				case 'P':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[10], 0, 0, SRCCOPY);
-					break;
-				case 'H':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[11], 0, 0, SRCCOPY);
-					break;
-				case 'E':
-					BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
-						largeImgLength, largeImgLength, hMemDC[12], 0, 0, SRCCOPY);
-					break;
-				case 'V':
-					BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
-						smallImgLength, smallImgLength, hMemDC[13], 0, 0, SRCCOPY);
-					break;
-				case 'S':
-					BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
-						smallImgLength, smallImgLength, hMemDC[14], 0, 0, SRCCOPY);
-					break;
-				}
-				if (targetPoint[y][x] == '*')
-				{
-					BitBlt(hdc, startPoint - 10 + (digit * x), startPoint - 10 + (digit * y),
-						20, 20, hMemDC[15], 0, 0, SRCCOPY);
-				}
-			}
 		return 0;
 	case WM_DESTROY:
 		for (i = 1; i <= 15; i++)
@@ -564,7 +480,15 @@ void DrawKnight()
 
 void DrawSniper()
 {
-
+	int enableMove, j;
+	//앞에 포를 제외한 말이 있는지
+	for (j = ty; j >= 0; j--)
+	{
+		if (tower[j][tx] == ' ' || tower[j][tx] == 'p' || tower[j][tx] == 'P')
+		{
+			
+		}
+	}
 }
 
 void RemovePoint()
@@ -578,94 +502,95 @@ void RemovePoint()
 		}
 }
 
-void DrawBitmap(HDC hdc)
+void DrawBoard()
 {
-	//실제 비트멥 이미지를 가질 DC핸들과 가상의 DC핸들 변수선언
-	HDC hMemDC, hMemDC2;
-	HBITMAP hOldBitmap, hBackBit;
+	//판 그리기
+	for (y = 0; y < 9; y++)
+		for (x = 0; x < 8; x++)
+			Rectangle(hdc, startPoint + (x * digit), startPoint + (y * digit),
+				(startPoint + digit) + (x * digit), (startPoint + digit) + (y * digit));
 
-	//실제 비트멥 이미지를 가질 DC핸들 지정
-	hMemDC = CreateCompatibleDC(hdc);
-	hBackBit = CreateCompatibleBitmap(hdc, 1024, 768);
-	hOldBitmap = (HBITMAP)SelectObject(hMemDC, hBackBit);
-	
-	//임시 비트맵 이미지를 가질 가상 DC핸들 지정
-	hMemDC2 = CreateCompatibleDC(hdc);
-	//배경을 선택
-	SelectObject(hMemDC2, hbrick[1]);
+	//중앙선
+	SetPixel(hdc, startPoint, startPoint, RGB(0, 255, 0));
+	MoveToEx(hdc, startPoint + (digit * 3), startPoint, NULL);
+	LineTo(hdc, startPoint + (digit * 5), startPoint + (digit * 2));
+	MoveToEx(hdc, startPoint + (digit * 5), startPoint, NULL);
+	LineTo(hdc, startPoint + (digit * 3), startPoint + (digit * 2));
 
-	//가상의 hMemDC2를 실제 hMemDC에 복사
-	BitBlt(hMemDC, 0, 0, 1024, 768, hMemDC2, 0, 0, SRCCOPY);
-	DeleteDC(hMemDC2);
+	MoveToEx(hdc, startPoint + (digit * 3), startPoint + (digit * 7), NULL);
+	LineTo(hdc, startPoint + (digit * 5), startPoint + (digit * 9));
+	MoveToEx(hdc, startPoint + (digit * 5), startPoint + (digit * 7), NULL);
+	LineTo(hdc, startPoint + (digit * 3), startPoint + (digit * 9));
 
-	//투명색으로 빨간색으로 지정 후 hMemDC에 복사
-
-	TransBlt(hMemDC, 0, 350, hbrick[2], RGB(255, 255, 255));
-	//실제의 이미지를 그린다
-	BitBlt(hdc, 0, 0, 1024, 768, hMemDC, 0, 0, SRCCOPY);
-
-	SelectObject(hMemDC, hOldBitmap);
-	DeleteObject(hBackBit);
-	DeleteDC(hMemDC);
-}
-
-void TransBlt(HDC hdc, int x, int y, HBITMAP hbitmap, COLORREF clrMask)
-{
-	BITMAP bm;
-	COLORREF cColor;
-	HBITMAP bmAndBack, bmAndObject, bmAndMem, bmSave;
-	HBITMAP bmBackOld, bmObjectOld, bmMemOld, bmSaveOld;
-	HDC		hdcMem, hdcBack, hdcObject, hdcTemp, hdcSave;
-	POINT	ptSize;
-
-	hdcTemp = CreateCompatibleDC(hdc);
-	SelectObject(hdcTemp, hbitmap);
-	GetObject(hbitmap, sizeof(BITMAP), (LPSTR)&bm);
-	ptSize.x = bm.bmWidth;
-	ptSize.y = bm.bmHeight;
-	DPtoLP(hdcTemp, &ptSize, 1);
-
-	hdcBack = CreateCompatibleDC(hdc);
-	hdcObject = CreateCompatibleDC(hdc);
-	hdcMem = CreateCompatibleDC(hdc);
-	hdcSave = CreateCompatibleDC(hdc);
-
-	bmAndBack = CreateBitmap(ptSize.x, ptSize.y, 1, 1, NULL);
-	bmAndObject = CreateBitmap(ptSize.x, ptSize.y, 1, 1, NULL);
-	bmAndMem = CreateCompatibleBitmap(hdc, ptSize.x, ptSize.y);
-	bmSave = CreateCompatibleBitmap(hdc, ptSize.x, ptSize.y);
-
-	bmBackOld = (HBITMAP)SelectObject(hdcBack, bmAndBack);
-	bmObjectOld = (HBITMAP)SelectObject(hdcObject, bmAndObject);
-	bmMemOld = (HBITMAP)SelectObject(hdcMem, bmAndMem);
-	bmSaveOld = (HBITMAP)SelectObject(hdcSave, bmSave);
-
-	SetMapMode(hdcTemp, GetMapMode(hdc));
-
-	BitBlt(hdcSave, 0, 0, ptSize.x, ptSize.y, hdcTemp, 0, 0, SRCCOPY);
-
-	cColor = SetBkColor(hdcTemp, clrMask);
-
-	BitBlt(hdcObject, 0, 0, ptSize.x, ptSize.y, hdcTemp, 0, 0, SRCCOPY);
-
-	SetBkColor(hdcTemp, cColor);
-
-	BitBlt(hdcBack, 0, 0, ptSize.x, ptSize.y, hdcObject, 0, 0, NOTSRCCOPY);
-	BitBlt(hdcMem, 0, 0, ptSize.x, ptSize.y, hdc, x, y, SRCCOPY);
-	BitBlt(hdcMem, 0, 0, ptSize.x, ptSize.y, hdcObject, 0, 0, SRCAND);
-	BitBlt(hdcTemp, 0, 0, ptSize.x, ptSize.y, hdcBack, 0, 0, SRCAND);
-	BitBlt(hdcMem, 0, 0, ptSize.x, ptSize.y, hdcTemp, 0, 0, SRCPAINT);
-	BitBlt(hdc, x, y, ptSize.x, ptSize.y, hdcMem, 0, 0, SRCCOPY);
-	BitBlt(hdcTemp, 0, 0, ptSize.x, ptSize.y, hdcSave, 0, 0, SRCCOPY);
-
-	DeleteObject(SelectObject(hdcBack, bmBackOld));
-	DeleteObject(SelectObject(hdcObject, bmObjectOld));
-	DeleteObject(SelectObject(hdcMem, bmMemOld));
-	DeleteObject(SelectObject(hdcSave, bmSaveOld));
-
-	DeleteDC(hdcMem);
-	DeleteDC(hdcBack);
-	DeleteDC(hdcObject);
-	DeleteDC(hdcSave);
-	DeleteDC(hdcTemp);
+	//말 그리기
+	for (y = 0; y < 10; y++)
+		for (x = 0; x < 9; x++)
+		{
+			switch (tower[y][x])
+			{
+				//한나라
+			case 'k':
+				BitBlt(hdc, startPoint - (giantImgLength / 2) + (digit * x), startPoint - (giantImgLength / 2) + (digit * y),
+					giantImgLength, giantImgLength, hMemDC[1], 0, 0, SRCCOPY);
+				break;
+			case 'c':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[2], 0, 0, SRCCOPY);
+				break;
+			case 'p':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[3], 0, 0, SRCCOPY);
+				break;
+			case 'h':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[4], 0, 0, SRCCOPY);
+				break;
+			case 'e':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[5], 0, 0, SRCCOPY);
+				break;
+			case 'v':
+				BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
+					smallImgLength, smallImgLength, hMemDC[6], 0, 0, SRCCOPY);
+				break;
+			case 's':
+				BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
+					smallImgLength, smallImgLength, hMemDC[7], 0, 0, SRCCOPY);
+				break;
+				//초나라
+			case 'K':
+				BitBlt(hdc, startPoint - (giantImgLength / 2) + (digit * x), startPoint - (giantImgLength / 2) + (digit * y),
+					giantImgLength, giantImgLength, hMemDC[8], 0, 0, SRCCOPY);
+				break;
+			case 'C':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[9], 0, 0, SRCCOPY);
+				break;
+			case 'P':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[10], 0, 0, SRCCOPY);
+				break;
+			case 'H':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[11], 0, 0, SRCCOPY);
+				break;
+			case 'E':
+				BitBlt(hdc, startPoint - (largeImgLength / 2) + (digit * x), startPoint - (largeImgLength / 2) + (digit * y),
+					largeImgLength, largeImgLength, hMemDC[12], 0, 0, SRCCOPY);
+				break;
+			case 'V':
+				BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
+					smallImgLength, smallImgLength, hMemDC[13], 0, 0, SRCCOPY);
+				break;
+			case 'S':
+				BitBlt(hdc, startPoint - (smallImgLength / 2) + (digit * x), startPoint - (smallImgLength / 2) + (digit * y),
+					smallImgLength, smallImgLength, hMemDC[14], 0, 0, SRCCOPY);
+				break;
+			}
+			if (targetPoint[y][x] == '*')
+			{
+				BitBlt(hdc, startPoint - 10 + (digit * x), startPoint - 10 + (digit * y),
+					20, 20, hMemDC[15], 0, 0, SRCCOPY);
+			}
+		}
 }
