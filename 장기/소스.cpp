@@ -27,6 +27,7 @@ char tower[10][10] = {	//판에 세울 말들 (소문자 : 한나라, 대문자 : 초나라)
 	"    K    ",
 	"CEHV VEHC"
 };
+char towerTmp[10][10];
 char targetPoint[10][10]; //말을 움직이게 하기위한 찍을 지점
 static char setTower;	//알 선택
 int tx, ty;	//알 이동
@@ -81,21 +82,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
 void TransBlt(HDC hdc, int x, int y, HBITMAP hbitmap, COLORREF clrMask);
 void DrawBitmap(HDC hdc);
 
-void DrawBoard();
-void RemovePoint();
+void DrawBoard();	//판을 그린다
+void RemovePoint();	//점을 모두 지운다
 void DrawInCase(int t);	//각 궁전안에 있는 말들을 움직이게 하려고
 void DrawKnight();	//상, 마 이동
 void DrawVihicle();	//차 이동
 void DrawSniper();	//포 이동
-char DrawPoint(int x, int y)
-{
-	//t는 턴상태이며 같은 말끼리 찍어지지 않게 하려고
-	if (turn == 1)	//초나라 차례
-		return tower[y][x] >= 'A' && tower[y][x] <= 'Z' ? NULL : '*';
-	else if (turn == 2)	//한나라 차례
-		return tower[y][x] >= 'a' && tower[y][x] <= 'z' ? NULL : '*';
-}
-void MoveTower();
+char DrawPoint(int x, int y);
+void MoveTower();	//말이 선택되었을 때
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
@@ -111,11 +105,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			hbrick[i]=LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP1+i-1)); // 리소스 ID값이 연속적으로 정렬된경우
 			brick[i] = (HBITMAP)SelectObject(hMemDC[i], hbrick[i]);
 		}
-
 		for (x = 0; x < 9; x++)
 			for (y = 0; y < 10; y++)
 				targetPoint[y][x] = ' ';
-
 		ReleaseDC(hWnd, hdc);
 		return 0;
 	case WM_LBUTTONDOWN:
@@ -202,9 +194,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 		if (targetPoint[ty][tx] == '*')
 		{
+			bool ChoWin = tower[ty][tx] == 'k' && turn == 1;
+			bool HanWin = tower[ty][tx] == 'K' && turn == 2;
 			tower[ty][tx] = setTower;
 			tower[preY][preX] = ' ';
 			RemovePoint();
+			//왕을 잡으면 승리판정
+			if (ChoWin || HanWin)
+			{
+				if(ChoWin)
+					wsprintf(str, TEXT("초나라 승리!!!"));
+				else if(HanWin)
+					wsprintf(str, TEXT("한나라 승리!!!"));
+
+				InvalidateRect(hWnd, NULL, true);
+				MessageBox(hWnd, str, TEXT("게임 끝"), MB_OK);
+				PostQuitMessage(0);
+			}
 			turn = turn == 1 ? 2 : 1;
 		}
 		InvalidateRect(hWnd, NULL, true);
@@ -384,33 +390,29 @@ void DrawInCase(int t)
 void DrawVihicle()
 {
 	int j;
-	//위
-	for (j = ty - 1; j >= 0; j--)
+	for (j = ty - 1; j >= 0; j--)	//위
 	{
-		if (tower[j][tx] != ' ')
-			return;
 		targetPoint[j][tx] = DrawPoint(tx, j);
-	}
-	//아래
-	for (j = ty + 1; j < 10; j++)
-	{
 		if (tower[j][tx] != ' ')
-			return;
+			break;
+	}
+	for (j = ty + 1; j < 10; j++)	//아래
+	{
 		targetPoint[j][tx] = DrawPoint(tx, j);
+		if (tower[j][tx] != ' ')
+			break;
 	}
-	//왼쪽
-	for (j = tx - 1; j >= 0; j--)
+	for (j = tx - 1; j >= 0; j--)	//왼쪽
 	{
-		if (tower[ty][j] != ' ')
-			return;
 		targetPoint[ty][j] = DrawPoint(j, ty);
+		if (tower[ty][j] != ' ')
+			break;
 	}
-	//오른쪽
-	for (j = tx + 1; j < 9; j++)
+	for (j = tx + 1; j < 9; j++)	//오른쪽
 	{
-		if (tower[ty][j] != ' ')
-			return;
 		targetPoint[ty][j] = DrawPoint(j, ty);
+		if (tower[ty][j] != ' ')
+			break;
 	}
 }
 
@@ -482,13 +484,79 @@ void DrawSniper()
 {
 	int enableMove, j;
 	//앞에 포를 제외한 말이 있는지
-	for (j = ty; j >= 0; j--)
+	for (j = ty - 1; j >= 0; j--)	//위
 	{
-		if (tower[j][tx] == ' ' || tower[j][tx] == 'p' || tower[j][tx] == 'P')
+		if (tower[j][tx] == 'p' || tower[j][tx] == 'P')
+			break;
+		if (tower[j][tx] != ' ')
 		{
-			
+			enableMove = j - 1;
+			for (j = enableMove; j >= 0; j--)
+			{
+				targetPoint[j][tx] = DrawPoint(tx, j);
+				if (tower[j][tx] != ' ' || tower[j - 1][tx] == 'p' || tower[j - 1][tx] == 'P')
+					break;
+			}
+			break;
 		}
 	}
+	for (j = ty + 1; j < 10; j++)	//아래
+	{
+		if (tower[j][tx] == 'p' || tower[j][tx] == 'P')
+			break;
+		if (tower[j][tx] != ' ')
+		{
+			enableMove = j + 1;
+			for (j = enableMove; j < 10; j++)
+			{
+				targetPoint[j][tx] = DrawPoint(tx, j);
+				if (tower[j][tx] != ' ' || tower[j + 1][tx] == 'p' || tower[j + 1][tx] == 'P')
+					break;
+			}
+			break;
+		}
+	}
+	for (j = tx - 1; j >= 0; j--)	//왼쪽
+	{
+		if (tower[ty][j] == 'p' || tower[ty][j] == 'P')
+			break;
+		if (tower[ty][j] != ' ')
+		{
+			enableMove = j - 1;
+			for (j = enableMove; j >= 0; j--)
+			{
+				targetPoint[ty][j] = DrawPoint(j, ty);
+				if (tower[ty][j] != ' ' || tower[ty][j - 1] == 'p' || tower[ty][j - 1] == 'P')
+					break;
+			}
+			break;
+		}
+	}
+	for (j = tx + 1; j < 9; j++)	//오른쪽
+	{
+		if (tower[ty][j] == 'p' || tower[ty][j] == 'P')
+			break;
+		if (tower[ty][j] != ' ')
+		{
+			enableMove = j + 1;
+			for (j = enableMove; j < 9; j++)
+			{
+				targetPoint[ty][j] = DrawPoint(j, ty);
+				if (tower[ty][j] != ' ' || tower[ty][j + 1] == 'p' || tower[ty][j + 1] == 'P')
+					break;
+			}
+			break;
+		}
+	}
+}
+
+char DrawPoint(int x, int y)
+{
+	//t는 턴상태이며 같은 말끼리 찍어지지 않게 하려고
+	if (turn == 1)	//초나라 차례
+		return (tower[y][x] >= 'A' && tower[y][x] <= 'Z') || (setTower == 'P' && tower[y][x] == 'p') ? NULL : '*';
+	else if (turn == 2)	//한나라 차례
+		return (tower[y][x] >= 'a' && tower[y][x] <= 'z') || (setTower == 'p' && tower[y][x] == 'P') ? NULL : '*';
 }
 
 void RemovePoint()
