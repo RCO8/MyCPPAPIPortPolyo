@@ -32,6 +32,7 @@ void MoveRook();
 void MoveBishop();
 void MoveKing();
 char DrawPoint(int X, int Y);
+void CheckVictory(HWND hWnd);
 
 //비트맵 리소스 핸들(배경 및 아이콘)
 HBITMAP background[15];	//퀸, 킹, 비숍, 나이트, 룩, 폰 순으로
@@ -90,6 +91,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	RECT crt;
 	TCHAR str[256];
 
+	bool victory = false;
+
 	switch (iMessage) {
 	case WM_CREATE:
 		hWndMain = hWnd;
@@ -123,8 +126,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		pointY = (HIWORD(lParam) / 75);
 		if (targetPoint[pointY][pointX] == 'x')
 		{
+			if (towers[pointY][pointX] == 'K')
+			{
+				victory = true;
+				wsprintf(str, TEXT("백색이 이겼습니다"));
+			}
+			if (towers[pointY][pointX] == 'k')
+			{
+				victory = true;
+				wsprintf(str, TEXT("흑색이 이겼습니다"));
+			}
 			towers[pointY][pointX] = selectTower;
 			towers[selectY][selectX] = ' ';
+
+			if (victory)
+				MessageBox(hWnd, str, TEXT("게임 끝"), MB_OK);
 
 			//폰이 끝까지 가면 말 바꾸기
 			if (selectTower == 'p' && pointY == 0)
@@ -371,6 +387,18 @@ void MoveKing()
 		targetPoint[pointY + 1][pointX] = DrawPoint(pointX, pointY + 1);
 		targetPoint[pointY + 1][pointX + 1] = DrawPoint(pointX + 1, pointY + 1);
 	}
+}
+void CheckVictory(HWND hWnd)
+{
+	for(int y=0;y<8;y++)
+		for (int x = 0; x < 8; x++)
+		{
+			if (towers[y][x] == 'k')
+				return;
+
+			if (towers[y][x] == 'K')
+				return;
+		}
 }
 
 /*비트맵 파일을 화면에 보이게할 함수.
