@@ -33,6 +33,7 @@ void MoveBishop();
 void MoveKing();
 char DrawPoint(int X, int Y);
 void CheckVictory(HWND hWnd);
+void Check(HWND hWnd, char t, int x, int y);
 
 //비트맵 리소스 핸들(배경 및 아이콘)
 HBITMAP background[15];	//퀸, 킹, 비숍, 나이트, 룩, 폰 순으로
@@ -142,7 +143,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			if (victory)
 				MessageBox(hWnd, str, TEXT("게임 끝"), MB_OK);
 
-			//폰이 끝까지 가면 말 바꾸기
+			//폰이 끝까지 가면 말 바꾸기 (대화상자)
 			if (selectTower == 'p' && pointY == 0)
 				MessageBox(hWnd, TEXT("바꿀말을 선택하세요"), TEXT("백색 폰 도착!"), MB_OK);
 			if (selectTower == 'P' && pointY == 7)
@@ -218,6 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		InvalidateRect(hWnd, 0, NULL);
+		Check(hWnd, selectTower, pointX, pointY);
 		return 0;
 	case WM_RBUTTONDOWN:
 		RemovePoints();
@@ -285,6 +287,7 @@ void MovePawn()
 		if (towers[pointY - 1][pointX + 1] <= 'Z' && towers[pointY - 1][pointX + 1] >= 'A')
 			targetPoint[pointY - 1][pointX + 1] = DrawPoint(pointX + 1, pointY - 1);
 	}
+
 }
 void MoveKnight()
 {
@@ -379,13 +382,42 @@ void MoveKing()
 		targetPoint[pointY - 1][pointX] = DrawPoint(pointX, pointY - 1);
 		targetPoint[pointY - 1][pointX + 1] = DrawPoint(pointX + 1, pointY - 1);
 	}
-	if(pointX > 0) targetPoint[pointY][pointX - 1] = DrawPoint(pointX - 1, pointY);
-	if(pointX < 7) targetPoint[pointY][pointX + 1] = DrawPoint(pointX + 1, pointY);
 	if (pointY < 7)
 	{
 		targetPoint[pointY + 1][pointX - 1] = DrawPoint(pointX - 1, pointY + 1);
 		targetPoint[pointY + 1][pointX] = DrawPoint(pointX, pointY + 1);
 		targetPoint[pointY + 1][pointX + 1] = DrawPoint(pointX + 1, pointY + 1);
+	}
+	if(pointX > 0) targetPoint[pointY][pointX - 1] = DrawPoint(pointX - 1, pointY);
+	if(pointX < 7) targetPoint[pointY][pointX + 1] = DrawPoint(pointX + 1, pointY);
+}
+void Check(HWND hWnd, char t, int x, int y)
+{
+	switch (t)
+	{
+		int i;
+		case 'p':
+			if (towers[y - 1][x - 1] == 'K' || towers[y - 1][x + 1] == 'K')
+				MessageBox(hWnd, TEXT("체크"), TEXT("white"), MB_OK);
+		return;
+		case 'P':
+			if (towers[y + 1][x - 1] == 'k' || towers[y + 1][x + 1] == 'k')
+				MessageBox(hWnd, TEXT("체크"), TEXT("black"), MB_OK);
+		return;
+		case 'n':
+			if (towers[y - 2][x - 1] == 'K' || towers[y - 2][x + 1] == 'K' || towers[y + 2][x - 1] == 'K' || towers[y + 2][x + 1] == 'K'
+				|| towers[y - 1][x - 2] == 'K' || towers[y + 1][x - 2] == 'K' || towers[y - 1][x + 2] == 'K' || towers[y + 1][x + 2] == 'K')
+				MessageBox(hWnd, TEXT("체크"), TEXT("white"), MB_OK);
+		return;
+		case 'N':
+			if (towers[y - 2][x - 1] == 'k' || towers[y - 2][x + 1] == 'k' || towers[y + 2][x - 1] == 'k' || towers[y + 2][x + 1] == 'k'
+				|| towers[y - 1][x - 2] == 'k' || towers[y + 1][x - 2] == 'k' || towers[y - 1][x + 2] == 'k' || towers[y + 1][x + 2] == 'k')
+				MessageBox(hWnd, TEXT("체크"), TEXT("black"), MB_OK);
+		return;
+		case 'r':
+			
+
+		return;
 	}
 }
 void CheckVictory(HWND hWnd)
