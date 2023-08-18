@@ -393,9 +393,10 @@ void MoveKing()
 }
 void Check(HWND hWnd, char t, int x, int y)
 {
+	int i;
+	bool rook = false;	//상하좌우
 	switch (t)
 	{
-		int i;
 		case 'p':
 			if (towers[y - 1][x - 1] == 'K' || towers[y - 1][x + 1] == 'K')
 				MessageBox(hWnd, TEXT("체크"), TEXT("white"), MB_OK);
@@ -415,8 +416,108 @@ void Check(HWND hWnd, char t, int x, int y)
 				MessageBox(hWnd, TEXT("체크"), TEXT("black"), MB_OK);
 		return;
 		case 'r':
-			
-
+			for (i = y - 1; i >= 0; i--)	//위
+			{
+				if (towers[i][x] == ' ')
+					continue;
+				else if (towers[i][x] == 'K')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = y + 1; i < 8; i++)	//아래
+			{
+				if (towers[i][x] == ' ')
+					continue;
+				else if (towers[i][x] == 'K')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x - 1; i >= 0; i--)	//왼쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'K')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x + 1; i < 8; i++)	//오른쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'K')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			if(rook)
+				MessageBox(hWnd, TEXT("체크"), TEXT("white"), MB_OK);
+		return;
+		case 'R':
+			for (i = y - 1; i >= 0; i--)	//위
+			{
+				if (towers[i][x] == ' ')
+					continue;
+				else if (towers[i][x] == 'k')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = y + 1; i < 8; i++)	//아래
+			{
+				if (towers[i][x] == ' ')
+					continue;
+				else if (towers[i][x] == 'k')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x - 1; i >= 0; i--)	//왼쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'k')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x + 1; i < 8; i++)	//오른쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'k')
+				{
+					rook = true;
+					break;
+				}
+				else
+					break;
+			}
+			if (rook)
+				MessageBox(hWnd, TEXT("체크"), TEXT("black"), MB_OK);
 		return;
 	}
 }
