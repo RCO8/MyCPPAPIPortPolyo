@@ -510,10 +510,70 @@ void Check(HWND hWnd, char t, int x, int y)
 				else
 					break;
 			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x - i] == ' ')	//ÁÂÇÏ
+					continue;
+				else if (towers[y + i][x - i] == 'K')
+				{
+					bishop = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x + i] == ' ')	//¿ìÇÏ
+					continue;
+				else if (towers[y + i][x + i] == 'K')
+				{
+					bishop = true;
+					break;
+				}
+				else
+					break;
+			}
 			if (bishop)
 				MessageBox(hWnd, TEXT("Ã¼Å©"), TEXT("white"), MB_OK);
 		return;
 		case 'B':
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y - i][x - i] == ' ' || towers[y - i][x + i] == ' ')	//ÁÂ»ó or ¿ì»ó
+					continue;
+				else if (towers[y - i][x - i] == 'k' || towers[y - i][x + i] == 'k')
+				{
+					bishop = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x - i] == ' ')	//ÁÂÇÏ
+					continue;
+				else if (towers[y + i][x - i] == 'k')
+				{
+					bishop = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x + i] == ' ')	//¿ìÇÏ
+					continue;
+				else if (towers[y + i][x + i] == 'k')
+				{
+					bishop = true;
+					break;
+				}
+				else
+					break;
+			}
 		return;
 		case 'q':
 			for (i = 1; i < 8; i++)
@@ -545,6 +605,42 @@ void Check(HWND hWnd, char t, int x, int y)
 				if (towers[y][i] == ' ')
 					continue;
 				else if (towers[y][i] == 'K')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y - i][x - i] == ' ' || towers[y - i][x + i] == ' ')	//ÁÂ»ó or ¿ì»ó
+					continue;
+				else if (towers[y - i][x - i] == 'K' || towers[y - i][x + i] == 'K')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x - i] == ' ')	//ÁÂÇÏ
+					continue;
+				else if (towers[y + i][x - i] == 'K')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x + i] == ' ')	//¿ìÇÏ
+					continue;
+				else if (towers[y + i][x + i] == 'K')
 				{
 					queen = true;
 					break;
@@ -585,6 +681,42 @@ void Check(HWND hWnd, char t, int x, int y)
 				if (towers[y][i] == ' ')
 					continue;
 				else if (towers[y][i] == 'k')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y - i][x - i] == ' ' || towers[y - i][x + i] == ' ')	//ÁÂ»ó or ¿ì»ó
+					continue;
+				else if (towers[y - i][x - i] == 'k' || towers[y - i][x + i] == 'k')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x - i] == ' ')	//ÁÂÇÏ
+					continue;
+				else if (towers[y + i][x - i] == 'k')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y + i][x + i] == ' ')	//¿ìÇÏ
+					continue;
+				else if (towers[y + i][x + i] == 'k')
 				{
 					queen = true;
 					break;
