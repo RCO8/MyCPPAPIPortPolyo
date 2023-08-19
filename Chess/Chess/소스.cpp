@@ -394,7 +394,9 @@ void MoveKing()
 void Check(HWND hWnd, char t, int x, int y)
 {
 	int i;
-	bool rook = false;	//상하좌우
+	bool rook = false;
+	bool bishop = false;
+	bool queen = false;
 	switch (t)
 	{
 		case 'p':
@@ -416,23 +418,11 @@ void Check(HWND hWnd, char t, int x, int y)
 				MessageBox(hWnd, TEXT("체크"), TEXT("black"), MB_OK);
 		return;
 		case 'r':
-			for (i = y - 1; i >= 0; i--)	//위
+			for (i = 1; i < 8; i++)
 			{
-				if (towers[i][x] == ' ')
+				if (towers[y - i][x] == ' ' || towers[y + i][x] == ' ')	//위아래
 					continue;
-				else if (towers[i][x] == 'K')
-				{
-					rook = true;
-					break;
-				}
-				else
-					break;
-			}
-			for (i = y + 1; i < 8; i++)	//아래
-			{
-				if (towers[i][x] == ' ')
-					continue;
-				else if (towers[i][x] == 'K')
+				else if (towers[y - i][x] == 'K' || towers[y + i][x] == 'K')
 				{
 					rook = true;
 					break;
@@ -468,23 +458,11 @@ void Check(HWND hWnd, char t, int x, int y)
 				MessageBox(hWnd, TEXT("체크"), TEXT("white"), MB_OK);
 		return;
 		case 'R':
-			for (i = y - 1; i >= 0; i--)	//위
+			for (i = 1; i < 8; i++)
 			{
-				if (towers[i][x] == ' ')
+				if (towers[y - i][x] == ' ' || towers[y + i][x] == ' ')	//위아래
 					continue;
-				else if (towers[i][x] == 'k')
-				{
-					rook = true;
-					break;
-				}
-				else
-					break;
-			}
-			for (i = y + 1; i < 8; i++)	//아래
-			{
-				if (towers[i][x] == ' ')
-					continue;
-				else if (towers[i][x] == 'k')
+				else if (towers[y - i][x] == 'k' || towers[y + i][x] == 'k')
 				{
 					rook = true;
 					break;
@@ -517,6 +495,104 @@ void Check(HWND hWnd, char t, int x, int y)
 					break;
 			}
 			if (rook)
+				MessageBox(hWnd, TEXT("체크"), TEXT("black"), MB_OK);
+		return;
+		case 'b':
+			for (i = 1; i < 8; i++)	
+			{
+				if (towers[y - i][x - i] == ' ' || towers[y - i][x + i] == ' ')	//좌상 or 우상
+					continue;
+				else if (towers[y - i][x - i] == 'K' || towers[y - i][x + i] == 'K')
+				{
+					bishop = true;
+					break;
+				}
+				else
+					break;
+			}
+			if (bishop)
+				MessageBox(hWnd, TEXT("체크"), TEXT("white"), MB_OK);
+		return;
+		case 'B':
+		return;
+		case 'q':
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y - i][x] == ' ' || towers[y + i][x] == ' ')	//위아래
+					continue;
+				else if (towers[y - i][x] == 'K' || towers[y + i][x] == 'K')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x - 1; i >= 0; i--)	//왼쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'K')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x + 1; i < 8; i++)	//오른쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'K')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			if (queen)
+				MessageBox(hWnd, TEXT("체크"), TEXT("white"), MB_OK);
+		return;
+		case 'Q':
+			for (i = 1; i < 8; i++)
+			{
+				if (towers[y - i][x] == ' ' || towers[y + i][x] == ' ')	//위아래
+					continue;
+				else if (towers[y - i][x] == 'k' || towers[y + i][x] == 'k')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x - 1; i >= 0; i--)	//왼쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'k')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			for (i = x + 1; i < 8; i++)	//오른쪽
+			{
+				if (towers[y][i] == ' ')
+					continue;
+				else if (towers[y][i] == 'k')
+				{
+					queen = true;
+					break;
+				}
+				else
+					break;
+			}
+			if (queen)
 				MessageBox(hWnd, TEXT("체크"), TEXT("black"), MB_OK);
 		return;
 	}
