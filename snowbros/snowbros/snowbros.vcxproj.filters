@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Datas.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="snowbros.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\floor1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\floor2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\floor3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor4.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor5.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor6.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor7.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor8.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor9.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor10.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor11.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor12.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor13.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor14.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor15.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor16.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor17.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor18.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor19.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor20.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor21.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor22.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor23.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor24.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor25.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor26.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor27.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor28.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor29.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor30.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor31.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor32.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor33.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor34.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor35.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor36.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor37.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor38.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor39.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor40.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor41.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor42.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor43.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor44.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor45.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor46.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor47.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor48.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor49.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RSC\floor50.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\play1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\play1_move1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\play1_move2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\play1_move3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_dash1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_dash2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_dash3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_move1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_move2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_move3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_push1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_push2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="sprites\play1_push3.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

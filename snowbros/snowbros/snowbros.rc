@@ -1,0 +1,187 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 한국어(대한민국) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\snowbros\\snowbros\\RSC\\floor1.bmp"
+
+IDB_BITMAP2             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\snowbros\\snowbros\\RSC\\floor2.bmp"
+
+IDB_BITMAP3             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\snowbros\\snowbros\\RSC\\floor3.bmp"
+
+IDB_BITMAP4             BITMAP                  "RSC\\floor4.bmp"
+
+IDB_BITMAP5             BITMAP                  "RSC\\floor5.bmp"
+
+IDB_BITMAP6             BITMAP                  "RSC\\floor6.bmp"
+
+IDB_BITMAP7             BITMAP                  "RSC\\floor7.bmp"
+
+IDB_BITMAP8             BITMAP                  "RSC\\floor8.bmp"
+
+IDB_BITMAP9             BITMAP                  "RSC\\floor9.bmp"
+
+IDB_BITMAP10            BITMAP                  "RSC\\floor10.bmp"
+
+IDB_BITMAP11            BITMAP                  "RSC\\floor11.bmp"
+
+IDB_BITMAP12            BITMAP                  "RSC\\floor12.bmp"
+
+IDB_BITMAP13            BITMAP                  "RSC\\floor13.bmp"
+
+IDB_BITMAP14            BITMAP                  "RSC\\floor14.bmp"
+
+IDB_BITMAP15            BITMAP                  "RSC\\floor15.bmp"
+
+IDB_BITMAP16            BITMAP                  "RSC\\floor16.bmp"
+
+IDB_BITMAP17            BITMAP                  "RSC\\floor17.bmp"
+
+IDB_BITMAP18            BITMAP                  "RSC\\floor18.bmp"
+
+IDB_BITMAP19            BITMAP                  "RSC\\floor19.bmp"
+
+IDB_BITMAP20            BITMAP                  "RSC\\floor20.bmp"
+
+IDB_BITMAP21            BITMAP                  "RSC\\floor21.bmp"
+
+IDB_BITMAP22            BITMAP                  "RSC\\floor22.bmp"
+
+IDB_BITMAP23            BITMAP                  "RSC\\floor23.bmp"
+
+IDB_BITMAP24            BITMAP                  "RSC\\floor24.bmp"
+
+IDB_BITMAP25            BITMAP                  "RSC\\floor25.bmp"
+
+IDB_BITMAP26            BITMAP                  "RSC\\floor26.bmp"
+
+IDB_BITMAP27            BITMAP                  "RSC\\floor27.bmp"
+
+IDB_BITMAP28            BITMAP                  "RSC\\floor28.bmp"
+
+IDB_BITMAP29            BITMAP                  "RSC\\floor29.bmp"
+
+IDB_BITMAP30            BITMAP                  "RSC\\floor30.bmp"
+
+IDB_BITMAP31            BITMAP                  "RSC\\floor31.bmp"
+
+IDB_BITMAP32            BITMAP                  "RSC\\floor32.bmp"
+
+IDB_BITMAP33            BITMAP                  "RSC\\floor33.bmp"
+
+IDB_BITMAP34            BITMAP                  "RSC\\floor34.bmp"
+
+IDB_BITMAP35            BITMAP                  "RSC\\floor35.bmp"
+
+IDB_BITMAP36            BITMAP                  "RSC\\floor36.bmp"
+
+IDB_BITMAP37            BITMAP                  "RSC\\floor37.bmp"
+
+IDB_BITMAP38            BITMAP                  "RSC\\floor38.bmp"
+
+IDB_BITMAP39            BITMAP                  "RSC\\floor39.bmp"
+
+IDB_BITMAP40            BITMAP                  "RSC\\floor40.bmp"
+
+IDB_BITMAP41            BITMAP                  "RSC\\floor41.bmp"
+
+IDB_BITMAP42            BITMAP                  "RSC\\floor42.bmp"
+
+IDB_BITMAP43            BITMAP                  "RSC\\floor43.bmp"
+
+IDB_BITMAP44            BITMAP                  "RSC\\floor44.bmp"
+
+IDB_BITMAP45            BITMAP                  "RSC\\floor45.bmp"
+
+IDB_BITMAP46            BITMAP                  "RSC\\floor46.bmp"
+
+IDB_BITMAP47            BITMAP                  "RSC\\floor47.bmp"
+
+IDB_BITMAP48            BITMAP                  "RSC\\floor48.bmp"
+
+IDB_BITMAP49            BITMAP                  "RSC\\floor49.bmp"
+
+IDB_BITMAP50            BITMAP                  "RSC\\floor50.bmp"
+
+IDB_PLAY1_SPR1          BITMAP                  "sprites\\play1.bmp"
+
+IDB_PLAY1_SPR2          BITMAP                  "sprites\\play1_move1.bmp"
+
+IDB_PLAY1_SPR3          BITMAP                  "sprites\\play1_move2.bmp"
+
+IDB_PLAY1_SPR4          BITMAP                  "sprites\\play1_move3.bmp"
+
+IDB_PLAY1_SPR5          BITMAP                  "sprites\\play1_dash1.bmp"
+
+IDB_PLAY1_SPR6          BITMAP                  "sprites\\play1_dash2.bmp"
+
+IDB_PLAY1_SPR7          BITMAP                  "sprites\\play1_dash3.bmp"
+
+IDB_PLAY1_SPR8          BITMAP                  "sprites\\play1_push1.bmp"
+
+IDB_PLAY1_SPR9          BITMAP                  "sprites\\play1_push2.bmp"
+
+IDB_PLAY1_SPR10         BITMAP                  "sprites\\play1_push3.bmp"
+
+#endif    // 한국어(대한민국) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
