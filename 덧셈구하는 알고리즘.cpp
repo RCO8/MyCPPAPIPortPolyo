@@ -1,3 +1,6 @@
+//이건 일반코딩으로 구현한 소스
+//빈 프로젝트 항목에 전체 복사 붙여넣기만 하면 됨
+
 #include <windows.h>
 #include <stdlib.h>
 #include <time.h>
