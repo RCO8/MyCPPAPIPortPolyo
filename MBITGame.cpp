@@ -1,69 +1,75 @@
 #include <windows.h>
+#include <cstdlib>
+#include <ctime>
 #include <cmath>
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
-LPCTSTR lpszClass = TEXT("MBTI ¸ÂÃß±â");
+LPCTSTR lpszClass = TEXT("MBTI ë§žì¶”ê¸°");
 
 HDC hdc;
-TCHAR mbti[16][5] = { 
+TCHAR mbti[16][5] = {
 	TEXT("ENFJ"),TEXT("ENFP"),TEXT("ENTJ"),TEXT("ENTP"),
 	TEXT("ESFJ"),TEXT("ESFP"),TEXT("ESTJ"),TEXT("ESTP"),
 	TEXT("INFJ"),TEXT("INFP"),TEXT("INTJ"),TEXT("INTP"),
 	TEXT("ISFJ"),TEXT("ISFP"),TEXT("ISTJ"),TEXT("ISTP")
 };
-bool correct[16];	//mbtiÁ¤´ä
-int answer[4] = { 0,0,0,0 };	//ÇöÀç ´ä
-int count = 10;		//È½¼ö
-int score = 100;	//±âº»Á¡¼ö
-int addonScore = 0;	//Ãß°¡Á¡¼ö
+bool correct[16];	//mbtiì •ë‹µ
+int answer[4] = { 0,0,0,0 };	//í˜„ìž¬ ë‹µ
+int credit = 10;		//íšŸìˆ˜
+int score = 100;	//ê¸°ë³¸ì ìˆ˜
+int addonScore = 0;	//ì¶”ê°€ì ìˆ˜
+
+void Reset();
+void Setting();
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance
 	, LPSTR lpszCmdParam, int nCmdShow)
 {
-	HWND hWnd;		//À©µµ¿ì ÇÚµé
-	MSG Message;		//¸Þ½ÃÁö ±¸Á¶Ã¼
-	WNDCLASS WndClass;	//À©µµ¿ì Å¬·¡½º ±¸Á¶Ã¼
+	HWND hWnd;		//ìœˆë„ìš° í•¸ë“¤
+	MSG Message;		//ë©”ì‹œì§€ êµ¬ì¡°ì²´
+	WNDCLASS WndClass;	//ìœˆë„ìš° í´ëž˜ìŠ¤ êµ¬ì¡°ì²´
 	g_hInst = hInstance;
 
-	WndClass.cbClsExtra = 0;			//À©µµ¿ìÅ¬·¹½º µ¥ÀÌÅÍ ¿µ¿ª
-	WndClass.cbWndExtra = 0;			//À©µµ¿ì µ¥ÀÌÅÍ ¿µ¿ª
-	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	//¹ÙÅÁ»ö ºê·¯½¬ ÇÚµé
-	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);			//Ä¿¼­ ÇÚµé
-	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);			//¾ÆÀÌÄÜ ÇÚµé
-	WndClass.hInstance = hInstance;		//ÀÎ½ºÅÏ½º ÇÚµé
-	WndClass.lpfnWndProc = (WNDPROC)WndProc;	//À©µµ¿ì ÇÁ·Î½ÃÀú ÁöÁ¤
-	WndClass.lpszClassName = lpszClass;	//À©µµ¿ì Å¬·¡½º ÀÌ¸§
-	WndClass.lpszMenuName = NULL;		//¸Þ´ºÀÌ¸§
+	WndClass.cbClsExtra = 0;			//ìœˆë„ìš°í´ë ˆìŠ¤ ë°ì´í„° ì˜ì—­
+	WndClass.cbWndExtra = 0;			//ìœˆë„ìš° ë°ì´í„° ì˜ì—­
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	//ë°”íƒ•ìƒ‰ ë¸ŒëŸ¬ì‰¬ í•¸ë“¤
+	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);			//ì»¤ì„œ í•¸ë“¤
+	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);			//ì•„ì´ì½˜ í•¸ë“¤
+	WndClass.hInstance = hInstance;		//ì¸ìŠ¤í„´ìŠ¤ í•¸ë“¤
+	WndClass.lpfnWndProc = (WNDPROC)WndProc;	//ìœˆë„ìš° í”„ë¡œì‹œì € ì§€ì •
+	WndClass.lpszClassName = lpszClass;	//ìœˆë„ìš° í´ëž˜ìŠ¤ ì´ë¦„
+	WndClass.lpszMenuName = NULL;		//ë©”ë‰´ì´ë¦„
 	WndClass.style = CS_HREDRAW | CS_VREDRAW;
-	RegisterClass(&WndClass);		//À©µµ¿ì Å¬·¡½º µî·Ï
+	RegisterClass(&WndClass);		//ìœˆë„ìš° í´ëž˜ìŠ¤ ë“±ë¡
 
-	hWnd = CreateWindow(lpszClass,		//À©µµ¿ì Å¬·¡½º ÀÌ¸§
-		lpszClass,		//Å¸ÀÌÆ²¹Ù¿¡ Ãâ·ÂµÉ¹®ÀÚ¿­
-		WS_OVERLAPPEDWINDOW,	//À©µµ¿ì ½ºÅ¸ÀÏ
-		0,		//À©µµ¿ì ÁÂ»óxÁÂÇ¥
-		0,		//À©µµ¿ì ÁÂ»óyÁÂÇ¥
-		600,		//À©µµ¿ì Æø
-		400,		//À©µµ¿ì ³ôÀÌ
-		NULL,			//ºÎ¸ð À©µµ¿ì ÇÚµé
-		(HMENU)NULL,		//¸Þ´º È¤Àº ÀÚ½Ä À©µµ¿ìÀÇ ½Äº°ÀÚ
-		hInstance,		//À©µµ¿ì¸¦ »ý¼ºÇÑ ÀÎ½ºÅÏ½º ÇÚµé 
-		NULL 			//CREATESTRUCT ±¸Á¶Ã¼¸¦ ÅëÇØ Àü´ÞµÇ´Â °ª
+	hWnd = CreateWindow(lpszClass,		//ìœˆë„ìš° í´ëž˜ìŠ¤ ì´ë¦„
+		lpszClass,		//íƒ€ì´í‹€ë°”ì— ì¶œë ¥ë ë¬¸ìžì—´
+		WS_OVERLAPPEDWINDOW,	//ìœˆë„ìš° ìŠ¤íƒ€ì¼
+		0,		//ìœˆë„ìš° ì¢Œìƒxì¢Œí‘œ
+		0,		//ìœˆë„ìš° ì¢Œìƒyì¢Œí‘œ
+		600,		//ìœˆë„ìš° í­
+		400,		//ìœˆë„ìš° ë†’ì´
+		NULL,			//ë¶€ëª¨ ìœˆë„ìš° í•¸ë“¤
+		(HMENU)NULL,		//ë©”ë‰´ í˜¹ì€ ìžì‹ ìœˆë„ìš°ì˜ ì‹ë³„ìž
+		hInstance,		//ìœˆë„ìš°ë¥¼ ìƒì„±í•œ ì¸ìŠ¤í„´ìŠ¤ í•¸ë“¤ 
+		NULL 			//CREATESTRUCT êµ¬ì¡°ì²´ë¥¼ í†µí•´ ì „ë‹¬ë˜ëŠ” ê°’
 	);
 
 
-	if (!hWnd) return(FALSE);		//À©µµ¿ì »ý¼º½ÇÆÐ½Ã Á¾·á
+	if (!hWnd) return(FALSE);		//ìœˆë„ìš° ìƒì„±ì‹¤íŒ¨ì‹œ ì¢…ë£Œ
 
-	ShowWindow(hWnd, nCmdShow);		//À©µµ¿ì È­¸é¿¡ ³ªÅ¸³»±â
-	UpdateWindow(hWnd);			//À©µµ¿ì Å¬¶óÀÌ¾ðÆ® ¿µ¿ªÀ» Ä¥ÇÑ´Ù.
+	ShowWindow(hWnd, nCmdShow);		//ìœˆë„ìš° í™”ë©´ì— ë‚˜íƒ€ë‚´ê¸°
+	UpdateWindow(hWnd);			//ìœˆë„ìš° í´ë¼ì´ì–¸íŠ¸ ì˜ì—­ì„ ì¹ í•œë‹¤.
 	while (GetMessage(&Message, 0, 0, 0)) {
-		TranslateMessage(&Message);	//Å°º¸µå ¸Þ½ÃÁö¹ø¿ª
-		DispatchMessage(&Message);	//¸Þ½ÃÁö¸¦ ÇØ´çÇÁ·Î½ÃÀú·Î º¸³½´Ù
+		TranslateMessage(&Message);	//í‚¤ë³´ë“œ ë©”ì‹œì§€ë²ˆì—­
+		DispatchMessage(&Message);	//ë©”ì‹œì§€ë¥¼ í•´ë‹¹í”„ë¡œì‹œì €ë¡œ ë³´ë‚¸ë‹¤
 	}
 	return Message.wParam;
 }
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
+	HBRUSH SelectedBrush, UnselectedBrush, AnswerBrush, OldBrush;
 	TCHAR str[30];
 	HFONT hFont, OldFont;
 	switch (iMessage) {
@@ -78,9 +84,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		CreateWindow(TEXT("button"), TEXT("P"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 310, 90, 100, 40, hWnd, (HMENU)7, g_hInst, NULL);
 
 		CreateWindow(TEXT("button"), TEXT("OK"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 430, 50, 70, 80, hWnd, (HMENU)10, g_hInst, NULL);
+
+		srand(time(NULL));
+		Reset();
 		return 0;
 	case WM_COMMAND:
-		switch (wParam)
+		switch (wParam)	//ë²„íŠ¼ ì„ íƒ
 		{
 		case 0:	//E
 			answer[0] = answer[0] > 0 ? 0 : 1;
@@ -103,30 +112,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case 6:	//J
 			answer[3] = answer[3] > 0 ? 0 : 1;
 			break;
-		case 7:
+		case 7:	//P
 			answer[3] = answer[3] < 0 ? 0 : -1;
 			break;
 		case 10:
-			//Á¤´äÁ¦Ãâ
-			if (addonScore == 0) MessageBox(hWnd, TEXT("¹öÆ°À» ´©¸£°í È®ÀÎÇÏ¼¼¿ä"), TEXT("Error"), MB_OK);
+			//ì •ë‹µì œì¶œ
+			if (addonScore == 0) MessageBox(hWnd, TEXT("ë²„íŠ¼ì„ ëˆ„ë¥´ê³  í™•ì¸í•˜ì„¸ìš”"), TEXT("Error"), MB_OK);
+			else
+				SetTimer(hWnd, 1, 1000, NULL);
 			break;
 		}
-		addonScore = abs(answer[0]) + abs(answer[1]) + abs(answer[2]) + abs(answer[3]);
+		addonScore = pow(2, abs(answer[0]) + abs(answer[1]) + abs(answer[2]) + abs(answer[3]));
 		InvalidateRect(hWnd, NULL, 1);
 		return 0;
 	case WM_TIMER:
+		//1ì´ˆí›„ ê³µê°œ ì •ë‹µì´ë©´ addonScoreë¥¼ scoreì— ì¶”ê°€
+		InvalidateRect(hWnd, NULL, 0);
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		hFont = CreateFont(20, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0,
-			VARIABLE_PITCH | FF_ROMAN, TEXT("µ¸¿ò"));
+			VARIABLE_PITCH | FF_ROMAN, TEXT("ë‹ì›€"));
 		OldFont = (HFONT)SelectObject(hdc, hFont);
 		SetTextAlign(hdc, TA_CENTER);
 
-		wsprintf(str, TEXT("³ªÀÇ MBTI´Â ?"));
+		wsprintf(str, TEXT("ë‚˜ì˜ MBTIëŠ” ?"));
 		TextOut(hdc, 80, 10, str, lstrlen(str));
 
-		if (answer[0] != 0)
+		if (answer[0] != 0)	//ë²„íŠ¼ì„ ì„ íƒë˜ë©´ ë°°ì  ì¦ê°
 		{
 			wsprintf(str, TEXT("x2"));
 
@@ -166,26 +179,65 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		else wsprintf(str, TEXT("x0"));
 		TextOut(hdc, 530, 50, str, lstrlen(str));
 
-		for (int i = 0; i < 16; i++)
+		UnselectedBrush = CreateSolidBrush(RGB(255, 255, 255));
+		SelectedBrush = CreateSolidBrush(RGB(0, 255, 255));
+		AnswerBrush = CreateSolidBrush(RGB(255, 255, 0));
+		for (int i = 0; i < 16; i++)	//ì •ë‹µíŒ ê·¸ë¦¬ê¸°
 		{
 			/*
-			i°¡ 0~7±îÁö E 8ºÎÅÍ°¡ I
-
-			i°¡ È¦¼öÀÌ¸é J Â¦¼ö¸é P
-			¼±ÅÃµÈ »ç°¢ÇüÀº ÆÄ¶õ»ö, Á¤´äÀÌ ³ª¿Â »ç°¢ÇüÀº ³ë¶õ»ö
+			iê°€ 0~7ê¹Œì§€ E 8ë¶€í„°ê°€ I
+			ië¥¼ 4ë¡œ ë‚˜ëˆˆ ëª«ì´ ì§ìˆ˜ì´ë©´ N í™€ìˆ˜ë©´ S
+			ië¥¼ 4ë¡œ ë‚˜ëˆˆ ë‚˜ë¨¸ì§€ê°€ 1 ì´í•˜ì´ë©´ F ê·¸ì´ìƒì€ T
+			iê°€ í™€ìˆ˜ì´ë©´ J ì§ìˆ˜ë©´ P
+			ì„ íƒëœ ì‚¬ê°í˜•ì€ íŒŒëž€ìƒ‰, ì •ë‹µì´ ë‚˜ì˜¨ ì‚¬ê°í˜•ì€ ë…¸ëž€ìƒ‰
 			*/
+			if (addonScore > 0)
+			{
+				if ((answer[0] < 0 && i < 8) || (answer[0] > 0 && i > 7))
+					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+				else if ((answer[1] < 0 && (i / 4) % 2 == 0) || (answer[1] > 0 && (i / 4) % 2 == 1))
+					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+				else if ((answer[2] < 0 && (i % 4) < 2) || (answer[2] > 0 && (i % 4) > 1))
+					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+				else if ((answer[3] < 0 && i % 2 == 0) || (answer[3] > 0 && i % 2 == 1))
+					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+				else
+					OldBrush = (HBRUSH)SelectObject(hdc, SelectedBrush);
+			}
+			else
+				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
 			Rectangle(hdc, 10 + (100 * (i % 4)), 150 + ((i / 4) * 50), 10 + (100 * (i % 4) + 100), 200 + ((i / 4) * 50));
 			wsprintf(str, TEXT("%s"), mbti[i]);
 			TextOut(hdc, 60 + (100 * (i % 4)), 160 + ((i / 4) * 50), str, lstrlen(str));
 		}
 		SelectObject(hdc, OldFont);
+		DeleteObject(AnswerBrush);
+		DeleteObject(SelectedBrush);
+		DeleteObject(UnselectedBrush);
 		DeleteObject(hFont);
 		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_DESTROY:
-
 		PostQuitMessage(0);
 		return 0;
 	}
 	return(DefWindowProc(hWnd, iMessage, wParam, lParam));
+}
+
+void Reset()
+{
+	for (int i = 0; i < 16; i++)
+		correct[i] = false;
+	credit = 10;
+	//score = 100;
+}
+
+void Setting()
+{
+	if (credit == 0) Reset();
+	else credit -= 1;
+
+	for (int i = 0; i < 16; i++)
+		correct[i] = false;
+	correct[rand() % 16] = true;
 }
