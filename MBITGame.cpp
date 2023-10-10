@@ -13,11 +13,12 @@ TCHAR mbti[16][5] = {
 	TEXT("INFJ"),TEXT("INFP"),TEXT("INTJ"),TEXT("INTP"),
 	TEXT("ISFJ"),TEXT("ISFP"),TEXT("ISTJ"),TEXT("ISTP")
 };
-bool correct[16];	//mbti정답
+int correct[4];	//mbti정답
 int answer[4] = { 0,0,0,0 };	//현재 답
 int credit = 10;		//횟수
 int score = 100;	//기본점수
 int addonScore = 0;	//추가점수
+bool good = false;	//정답확인
 
 void Reset();
 void Setting();
@@ -87,6 +88,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		srand(time(NULL));
 		Reset();
+		Setting();
 		return 0;
 	case WM_COMMAND:
 		switch (wParam)	//버튼 선택
@@ -119,7 +121,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			//정답제출
 			if (addonScore == 0) MessageBox(hWnd, TEXT("버튼을 누르고 확인하세요"), TEXT("Error"), MB_OK);
 			else
+			{
+				score--;
 				SetTimer(hWnd, 1, 1000, NULL);
+				//이후 한번더 누르지 않게 결과 나올때 까지 비활성
+			}
 			break;
 		}
 		addonScore = pow(2, abs(answer[0]) + abs(answer[1]) + abs(answer[2]) + abs(answer[3]));
@@ -127,10 +133,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_TIMER:
 		//1초후 공개 정답이면 addonScore를 score에 추가
-		InvalidateRect(hWnd, NULL, 0);
+		for (int i = 0; i < 4; i++)
+		{
+			if (answer[i] == 0)
+				continue;
+			else if (correct[i] != answer[i])
+			{
+				good = false;
+				break;
+			}
+		}
+		if (good)
+			score += addonScore;
+		Setting();
+		KillTimer(hWnd, 1);
+		//이후에 버튼 초기화
+		InvalidateRect(hWnd, NULL, 1);
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
+		UnselectedBrush = CreateSolidBrush(RGB(255, 255, 255));
+		SelectedBrush = CreateSolidBrush(RGB(0, 255, 255));
+		AnswerBrush = CreateSolidBrush(RGB(255, 255, 0));
 		hFont = CreateFont(20, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0,
 			VARIABLE_PITCH | FF_ROMAN, TEXT("돋움"));
 		OldFont = (HFONT)SelectObject(hdc, hFont);
@@ -139,6 +163,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		wsprintf(str, TEXT("나의 MBTI는 ?"));
 		TextOut(hdc, 80, 10, str, lstrlen(str));
 
+		//추가점수
 		if (answer[0] != 0)	//버튼을 선택되면 배점 증감
 		{
 			wsprintf(str, TEXT("x2"));
@@ -179,9 +204,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		else wsprintf(str, TEXT("x0"));
 		TextOut(hdc, 530, 50, str, lstrlen(str));
 
-		UnselectedBrush = CreateSolidBrush(RGB(255, 255, 255));
-		SelectedBrush = CreateSolidBrush(RGB(0, 255, 255));
-		AnswerBrush = CreateSolidBrush(RGB(255, 255, 0));
+		//MBIT 정답판
 		for (int i = 0; i < 16; i++)	//정답판 그리기
 		{
 			/*
@@ -191,25 +214,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			i가 홀수이면 J 짝수면 P
 			선택된 사각형은 파란색, 정답이 나온 사각형은 노란색
 			*/
-			if (addonScore > 0)
-			{
-				if ((answer[0] < 0 && i < 8) || (answer[0] > 0 && i > 7))
-					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
-				else if ((answer[1] < 0 && (i / 4) % 2 == 0) || (answer[1] > 0 && (i / 4) % 2 == 1))
-					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
-				else if ((answer[2] < 0 && (i % 4) < 2) || (answer[2] > 0 && (i % 4) > 1))
-					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
-				else if ((answer[3] < 0 && i % 2 == 0) || (answer[3] > 0 && i % 2 == 1))
-					OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
-				else
-					OldBrush = (HBRUSH)SelectObject(hdc, SelectedBrush);
-			}
-			else
+			
+			if ((answer[0] < 0 && i < 8) || (answer[0] > 0 && i > 7))
 				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+			else if ((answer[1] < 0 && (i / 4) % 2 == 0) || (answer[1] > 0 && (i / 4) % 2 == 1))
+				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+			else if ((answer[2] < 0 && (i % 4) < 2) || (answer[2] > 0 && (i % 4) > 1))
+				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+			else if ((answer[3] < 0 && i % 2 == 0) || (answer[3] > 0 && i % 2 == 1))
+				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
+			else OldBrush = (HBRUSH)SelectObject(hdc, SelectedBrush);
+			
 			Rectangle(hdc, 10 + (100 * (i % 4)), 150 + ((i / 4) * 50), 10 + (100 * (i % 4) + 100), 200 + ((i / 4) * 50));
 			wsprintf(str, TEXT("%s"), mbti[i]);
 			TextOut(hdc, 60 + (100 * (i % 4)), 160 + ((i / 4) * 50), str, lstrlen(str));
 		}
+
+		//점수
+		SetTextAlign(hdc, TA_LEFT);
+		TextOut(hdc, 430, 150, TEXT("점수"), 2);
+		wsprintf(str, TEXT("%d"), score);
+		TextOut(hdc, 480, 150, str, lstrlen(str));
+		//크레딧
+		SetTextAlign(hdc, TA_LEFT);
+		TextOut(hdc, 430, 180, TEXT("크레딧"), 3);
+		wsprintf(str, TEXT("%d"), credit);
+		TextOut(hdc, 500, 180, str, lstrlen(str));
+
+		for (int i = 0; i < 4; i++)
+		{
+			wsprintf(str, TEXT("%d"), correct[i]);
+			TextOut(hdc, 430, 220 + (i * 20), str, lstrlen(str));
+		}
+
 		SelectObject(hdc, OldFont);
 		DeleteObject(AnswerBrush);
 		DeleteObject(SelectedBrush);
@@ -226,18 +263,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 void Reset()
 {
-	for (int i = 0; i < 16; i++)
-		correct[i] = false;
+	for (int i = 0; i < 4; i++)
+		correct[i] = 0;
 	credit = 10;
 	//score = 100;
 }
 
 void Setting()
 {
+	good = true;
+
 	if (credit == 0) Reset();
 	else credit -= 1;
 
-	for (int i = 0; i < 16; i++)
-		correct[i] = false;
-	correct[rand() % 16] = true;
+	for (int i = 0; i < 4; i++)
+	{
+		answer[i] = 0;
+		correct[i] = rand() % 2;
+		if (correct[i] == 0) correct[i] = -1;
+	}
 }
