@@ -1,0 +1,10 @@
+﻿  main.cpp
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(59,9): warning C4101: 'hBrush' :참조되지 않은 지역 변수입니다.
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(59,17): warning C4101: 'hOldBrush' :참조되지 않은 지역 변수입니다.
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(93,7): warning C4101: 'hParent' :참조되지 않은 지역 변수입니다.
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(93,16): warning C4101: 'hOwner' :참조되지 않은 지역 변수입니다.
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(94,8): warning C4101: 'str' :참조되지 않은 지역 변수입니다.
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(277,7): warning C4101: 'hParent' :참조되지 않은 지역 변수입니다.
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(277,16): warning C4101: 'hOwner' :참조되지 않은 지역 변수입니다.
+C:\Users\Lenovo\source\repos\MultiScreen\MultiScreen\main.cpp(278,8): warning C4101: 'str' :참조되지 않은 지역 변수입니다.
+  MultiScreen.vcxproj -> C:\Users\Lenovo\source\repos\MultiScreen\Debug\MultiScreen.exe

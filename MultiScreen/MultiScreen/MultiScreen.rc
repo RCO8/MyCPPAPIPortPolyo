@@ -1,0 +1,95 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 한국어(대한민국) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater1.bmp"
+
+IDB_BITMAP2             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater2.bmp"
+
+IDB_BITMAP3             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater3.bmp"
+
+IDB_BITMAP4             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater4.bmp"
+
+IDB_BITMAP5             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater5.bmp"
+
+IDB_BITMAP6             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater6.bmp"
+
+IDB_BITMAP7             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater7.bmp"
+
+IDB_BITMAP8             BITMAP                  "C:\\Users\\Lenovo\\source\\repos\\MultiScreen\\MultiScreen\\underwater8.bmp"
+
+IDB_BITMAP9             BITMAP                  "girl1_1.bmp"
+
+IDB_BITMAP10            BITMAP                  "girl1_2.bmp"
+
+IDB_BITMAP11            BITMAP                  "girl1_3.bmp"
+
+IDB_BITMAP12            BITMAP                  "girl2_1.bmp"
+
+IDB_BITMAP13            BITMAP                  "girl2_2.bmp"
+
+IDB_BITMAP14            BITMAP                  "girl2_3.bmp"
+
+#endif    // 한국어(대한민국) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
