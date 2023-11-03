@@ -135,13 +135,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		//1초후 공개 정답이면 MBTI설명 보여주고 정답 확인후 addonScore를 score에 추가
 		for (int i = 0; i < 4; i++)
 		{
-			wsprintf(str, TEXT("맞췄습니다!! \n다시하시겠습니까?"));
+			wsprintf(str, TEXT("맞췄습니다!! \n정답은 %s 입니다. \n다시하시겠습니까?"), mbti[tmp]);
 			if (answer[i] == 0)
 				continue;
 			else if (correct[i] != answer[i])
 			{
-
-				wsprintf(str, TEXT("틀렸습니다!! \n정답은 %s 입니다. \n다시하시겠습니까?"),mbti[tmp]);
+				wsprintf(str, TEXT("틀렸습니다!! \n정답은 %s 입니다. \n다시하시겠습니까?"), mbti[tmp]);
 				good = false;
 				break;
 			}
@@ -236,6 +235,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			else if ((answer[3] < 0 && i % 2 == 0) || (answer[3] > 0 && i % 2 == 1))
 				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
 			else OldBrush = (HBRUSH)SelectObject(hdc, SelectedBrush);
+
+			for (int j = 0; j < answerTmp; j++)
+			{
+				if (answerStack[j] == i)
+				{
+					OldBrush = (HBRUSH)SelectObject(hdc, AnswerBrush);
+				}
+			}
 
 			Rectangle(hdc, 10 + (100 * (i % 4)), 150 + ((i / 4) * 50), 10 + (100 * (i % 4) + 100), 200 + ((i / 4) * 50));
 			wsprintf(str, TEXT("%s"), mbti[i]);
