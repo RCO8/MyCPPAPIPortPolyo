@@ -71,8 +71,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
 	HBRUSH SelectedBrush, UnselectedBrush, AnswerBrush, OldBrush;
-	TCHAR str[30];
+	TCHAR str[50];
 	HFONT hFont, OldFont;
+
+	int tmp = 0;
 	switch (iMessage) {
 	case WM_CREATE:
 		CreateWindow(TEXT("button"), TEXT("E"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 10, 50, 100, 40, hWnd, (HMENU)0, g_hInst, NULL);
@@ -88,35 +90,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		srand(time(NULL));
 		Reset();
-		Setting();
 		return 0;
 	case WM_COMMAND:
 		switch (wParam)	//버튼 선택
 		{
 		case 0:	//E
-			answer[0] = answer[0] > 0 ? 0 : 1;
-			break;
+			answer[0] = answer[0] > 0 ? 0 : 1; break;
 		case 1:	//I
-			answer[0] = answer[0] < 0 ? 0 : -1;
-			break;
+			answer[0] = answer[0] < 0 ? 0 : -1; break;
 		case 2:	//N
-			answer[1] = answer[1] > 0 ? 0 : 1;
-			break;
+			answer[1] = answer[1] > 0 ? 0 : 1; break;
 		case 3:	//S
-			answer[1] = answer[1] < 0 ? 0 : -1;
-			break;
+			answer[1] = answer[1] < 0 ? 0 : -1; break;
 		case 4:	//F
-			answer[2] = answer[2] > 0 ? 0 : 1;
-			break;
+			answer[2] = answer[2] > 0 ? 0 : 1; break;
 		case 5:	//T
-			answer[2] = answer[2] < 0 ? 0 : -1;
-			break;
+			answer[2] = answer[2] < 0 ? 0 : -1; break;
 		case 6:	//J
-			answer[3] = answer[3] > 0 ? 0 : 1;
-			break;
+			answer[3] = answer[3] > 0 ? 0 : 1; break;
 		case 7:	//P
-			answer[3] = answer[3] < 0 ? 0 : -1;
-			break;
+			answer[3] = answer[3] < 0 ? 0 : -1; break;
 		case 10:
 			//정답제출
 			if (addonScore == 0) MessageBox(hWnd, TEXT("버튼을 누르고 확인하세요"), TEXT("Error"), MB_OK);
@@ -132,21 +125,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, 1);
 		return 0;
 	case WM_TIMER:
-		//1초후 공개 정답이면 addonScore를 score에 추가
+		//1초후 공개 정답이면 MBTI설명 보여주고 정답 확인후 addonScore를 score에 추가
 		for (int i = 0; i < 4; i++)
 		{
+			wsprintf(str, TEXT("맞췄습니다!! \n다시하시겠습니까?"));
 			if (answer[i] == 0)
 				continue;
 			else if (correct[i] != answer[i])
 			{
+				tmp = 0;
+				if (correct[0] < 0) tmp += 8;
+				if (correct[1] < 0) tmp += 4;
+				if (correct[2] < 0) tmp += 2;
+				if (correct[3] < 0) tmp += 1;
+
+				wsprintf(str, TEXT("틀렸습니다!! \n정답은 %s 입니다. \n다시하시겠습니까?"),mbti[0]);
 				good = false;
 				break;
 			}
 		}
-		if (good)
-			score += addonScore;
-		Setting();
 		KillTimer(hWnd, 1);
+		//메세지박스 띄우기 (MBTI설명)
+		if (MessageBox(hWnd, str, TEXT("결과"), MB_OKCANCEL) == IDOK)
+		{	//계속하기
+			if (good)
+				score += addonScore;
+			Setting();
+		}
+		else {
+			//끝내고 초기화
+			//Reset();
+		}
 		//이후에 버튼 초기화
 		InvalidateRect(hWnd, NULL, 1);
 		return 0;
@@ -214,7 +223,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			i가 홀수이면 J 짝수면 P
 			선택된 사각형은 파란색, 정답이 나온 사각형은 노란색
 			*/
-			
+
 			if ((answer[0] < 0 && i < 8) || (answer[0] > 0 && i > 7))
 				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
 			else if ((answer[1] < 0 && (i / 4) % 2 == 0) || (answer[1] > 0 && (i / 4) % 2 == 1))
@@ -224,7 +233,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			else if ((answer[3] < 0 && i % 2 == 0) || (answer[3] > 0 && i % 2 == 1))
 				OldBrush = (HBRUSH)SelectObject(hdc, UnselectedBrush);
 			else OldBrush = (HBRUSH)SelectObject(hdc, SelectedBrush);
-			
+
 			Rectangle(hdc, 10 + (100 * (i % 4)), 150 + ((i / 4) * 50), 10 + (100 * (i % 4) + 100), 200 + ((i / 4) * 50));
 			wsprintf(str, TEXT("%s"), mbti[i]);
 			TextOut(hdc, 60 + (100 * (i % 4)), 160 + ((i / 4) * 50), str, lstrlen(str));
@@ -264,9 +273,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 void Reset()
 {
 	for (int i = 0; i < 4; i++)
+	{
+		answer[i] = 0;
 		correct[i] = 0;
+	}
 	credit = 10;
-	//score = 100;
+	score = 100;
+	Setting();
 }
 
 void Setting()
@@ -276,6 +289,7 @@ void Setting()
 	if (credit == 0) Reset();
 	else credit -= 1;
 
+	addonScore = 0;
 	for (int i = 0; i < 4; i++)
 	{
 		answer[i] = 0;
