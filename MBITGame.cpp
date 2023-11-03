@@ -19,6 +19,8 @@ int credit = 10;		//횟수
 int score = 100;	//기본점수
 int addonScore = 0;	//추가점수
 bool good = false;	//정답확인
+int answerStack[10];
+int answerTmp = 0;
 
 void Reset();
 void Setting();
@@ -125,6 +127,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, 1);
 		return 0;
 	case WM_TIMER:
+		tmp = 0;	//mbti 결과 인덱스를 찾기위해 대입으로 지정
+		if (correct[0] < 0) tmp += 8;
+		if (correct[1] < 0) tmp += 4;
+		if (correct[2] < 0) tmp += 2;
+		if (correct[3] < 0) tmp += 1;
 		//1초후 공개 정답이면 MBTI설명 보여주고 정답 확인후 addonScore를 score에 추가
 		for (int i = 0; i < 4; i++)
 		{
@@ -133,17 +140,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				continue;
 			else if (correct[i] != answer[i])
 			{
-				tmp = 0;
-				if (correct[0] < 0) tmp += 8;
-				if (correct[1] < 0) tmp += 4;
-				if (correct[2] < 0) tmp += 2;
-				if (correct[3] < 0) tmp += 1;
 
-				wsprintf(str, TEXT("틀렸습니다!! \n정답은 %s 입니다. \n다시하시겠습니까?"),mbti[0]);
+				wsprintf(str, TEXT("틀렸습니다!! \n정답은 %s 입니다. \n다시하시겠습니까?"),mbti[tmp]);
 				good = false;
 				break;
 			}
 		}
+		answerStack[answerTmp++] = tmp;
 		KillTimer(hWnd, 1);
 		//메세지박스 띄우기 (MBTI설명)
 		if (MessageBox(hWnd, str, TEXT("결과"), MB_OKCANCEL) == IDOK)
@@ -154,7 +157,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 		else {
 			//끝내고 초기화
-			//Reset();
+			Reset();
 		}
 		//이후에 버튼 초기화
 		InvalidateRect(hWnd, NULL, 1);
@@ -250,10 +253,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		wsprintf(str, TEXT("%d"), credit);
 		TextOut(hdc, 500, 180, str, lstrlen(str));
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++)	//정답 판별에 따라 어떻게 나오는지 테스트용으로 확인
 		{
-			wsprintf(str, TEXT("%d"), correct[i]);
-			TextOut(hdc, 430, 220 + (i * 20), str, lstrlen(str));
+			//wsprintf(str, TEXT("%d"), correct[i]);
+			//TextOut(hdc, 430, 220 + (i * 20), str, lstrlen(str));
 		}
 
 		SelectObject(hdc, OldFont);
@@ -295,5 +298,5 @@ void Setting()
 		answer[i] = 0;
 		correct[i] = rand() % 2;
 		if (correct[i] == 0) correct[i] = -1;
-	}
+	}	// 맞춘 MBTI가 중복되면 다시 세팅
 }
