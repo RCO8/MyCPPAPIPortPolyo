@@ -289,21 +289,40 @@ void Reset()
 	}
 	credit = 10;
 	score = 100;
+
+	answerTmp = 0;
+	for (int i = 0; i < 10; i++)
+		answerStack[i] = -1;
+
 	Setting();
 }
 
 void Setting()
 {
+	int checkStack = 0;
+
 	good = true;
 
 	if (credit == 0) Reset();
 	else credit -= 1;
 
 	addonScore = 0;
+
+
 	for (int i = 0; i < 4; i++)
 	{
 		answer[i] = 0;
 		correct[i] = rand() % 2;
 		if (correct[i] == 0) correct[i] = -1;
-	}	// 맞춘 MBTI가 중복되면 다시 세팅
+
+		checkStack += correct[i] > 0 ? pow(2, i) : 0;
+
+		// 맞춘 MBTI가 중복되면 다시 세팅
+		if(answerTmp > 0)
+			for (int j = 0; j < answerTmp; j++)
+				if (answerStack[j] == checkStack)
+				{
+					//다시 검사
+				}
+	}	
 }
