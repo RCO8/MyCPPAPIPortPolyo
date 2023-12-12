@@ -41,15 +41,15 @@ void CheckWinner(HWND getWnd, bool t)	//승패 검사
 
 	if (t)
 	{
-		wsprintf(msg, TEXT("파란 말이 이겼습니다."));
-		turnNode[0] = '2';
-		turnNode[1] = '4';
-	}
-	else
-	{
 		wsprintf(msg, TEXT("빨간 말이 이겼습니다."));
 		turnNode[0] = '1';
 		turnNode[1] = '3';
+	}
+	else
+	{
+		wsprintf(msg, TEXT("파란 말이 이겼습니다."));
+		turnNode[0] = '2';
+		turnNode[1] = '4';
 	}
 
 	for(int i=0;i<8;i++)
@@ -281,11 +281,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 					Board[mPointY][mPointX] = '3';
 				turn = true;
 			}
-
-			//각 말개수 검사
-			CheckWinner(hWnd, turn);
 		}
 		InvalidateRect(hWnd, NULL, true);
+
+		//각 말개수 검사
+		CheckWinner(hWnd, turn);
 		return 0;
 	case WM_SETFOCUS:
 		SetFocus(hWnd);
